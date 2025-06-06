@@ -5,7 +5,7 @@ Gestion des coûts, limites et paramètres globaux
 
 import os
 from typing import Dict, Any, Optional
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, field
 from .resource_manager import resource_manager
 
 @dataclass
@@ -25,11 +25,11 @@ class EcoAgentConfig:
     language: str = "fr"  # fr ou en
     debug_mode: bool = False
     
-    # Gestion des coûts
-    cost_limits: CostLimits = CostLimits()
+    # Gestion des coûts - utilisation de field() pour les objets mutables
+    cost_limits: CostLimits = field(default_factory=CostLimits)
     
     # Configuration des modèles (auto-détectée)
-    model_config: Dict[str, Any] = None
+    model_config: Optional[Dict[str, Any]] = None
     
     # Chemins
     workspace_dir: str = "./workspace"
@@ -70,8 +70,16 @@ class EcoAgentConfig:
         import json
         os.makedirs(os.path.dirname(config_path), exist_ok=True)
         
+        # Conversion en dictionnaire avec gestion des objets complexes
+        config_dict = {}
+        for key, value in asdict(self).items():
+            if key == 'cost_limits':
+                config_dict[key] = asdict(value) if hasattr(value, '__dict__') else value
+            else:
+                config_dict[key] = value
+        
         with open(config_path, 'w', encoding='utf-8') as f:
-            json.dump(asdict(self), f, indent=2, ensure_ascii=False)
+            json.dump(config_dict, f, indent=2, ensure_ascii=False)
     
     def get_display_summary(self) -> str:
         """Résumé lisible de la configuration"""
@@ -79,7 +87,7 @@ class EcoAgentConfig:
 🔧 EcoAgent Framework v{self.version}
 🌍 Langue: {self.language.upper()}
 💰 Limite quotidienne: {self.cost_limits.daily_limit_euros}€
-⚡ Modèle principal: {self.model_config.get('primary_model', 'N/A')}
+⚡ Modèle principal: {self.model_config.get('primary_model', 'N/A') if self.model_config else 'N/A'}
 📁 Espace de travail: {self.workspace_dir}
 🔑 OpenAI API: {'✅' if self.openai_api_key else '❌'}
 🔑 Anthropic API: {'✅' if self.anthropic_api_key else '❌'}
