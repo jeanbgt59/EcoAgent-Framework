@@ -1,0 +1,45 @@
+{
+  "project_info": {
+    "name": "demo-boutique",
+    "template": "ecommerce",
+    "framework": "fastapi-react",
+    "mode": "standard",
+    "created_at": "2025-06-15T18:36:56.564639",
+    "created_by": "EcoAgent CLI v2.0"
+  },
+  "generation_info": {
+    "integration_used": true,
+    "agents_invoked": [
+      "AnalysisAgent",
+      "ArchitectAgent",
+      "CoderAgent"
+    ],
+    "execution_time": 0,
+    "framework_version": "1.0.0",
+    "files_created": [
+      "main.py",
+      "requirements.txt",
+      "README.md"
+    ]
+  },
+  "framework_status": {
+    "framework_available": true,
+    "agents_count": 3,
+    "core_components": 2,
+    "integration_level": "full",
+    "last_activity": "2025-06-15 17:56",
+    "version_detected": "1.0.0",
+    "agents_available": {
+      "framework_available": true,
+      "agents_folder": true,
+      "core_folder": true,
+      "analysis_agent": true,
+      "architect_agent": true,
+      "coder_agent": true,
+      "resource_manager": true,
+      "config_manager": true,
+      "test_files": true,
+      "generated_apps": true
+    }
+  }
+}
